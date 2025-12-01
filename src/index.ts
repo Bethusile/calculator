@@ -1,4 +1,4 @@
-import './style.css'
+import './index.css'
 
 let currentInput: string = '';
 let lastAnswer: number = 0;
