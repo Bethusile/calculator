@@ -1,3 +1,4 @@
+import './style.css'
 let currentInput: string = '';
 let lastAnswer: number = 0;
 
