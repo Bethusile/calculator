@@ -1,116 +1,158 @@
 // index.ts
+// index.ts
 export {};
 
-// --- INJECT HTML & CSS LINK ---
-function injectCalculatorHTML(): void {
-  
-  // Set up the main body structure with your specified HTML
-  document.body.innerHTML = `
-  <div class="calculator-container wrapper" id="calculator" style="position:relative;">
-    <div id="calculatorheader" style="cursor:grab;"></div>
+// --- CREATE HTML ELEMENTS DYNAMICALLY ---
+function createCalculator(): HTMLElement {
+    const wrapper = document.createElement('div');
+    wrapper.id = 'calculator';
+    wrapper.className = 'calculator-container wrapper';
+    wrapper.style.position = 'relative';
 
-    <div class="calculator-content">
+    // --- Drag Header ---
+    const dragHeader = document.createElement('div');
+    dragHeader.id = 'calculatorheader';
+    dragHeader.style.cursor = 'grab';
+    wrapper.appendChild(dragHeader);
 
-      <div class="calculator-header">
-          <button class="menu-btn">☰</button>
-          <div class="title">Scientific</div>
-          <div class="mode-toggles">
-              <span id="rad-deg-indicator">DEG</span>
-              <span id="f-e-indicator">F-E</span>
-              <button class="history-btn">⟲</button>
-          </div>
-      </div>
+    // --- Content Container ---
+    const content = document.createElement('div');
+    content.className = 'calculator-content';
+    wrapper.appendChild(content);
 
-      <div class="display-container">
-          <div class="computation-display"></div> 
-          <div class="result-display">0</div> 
-      </div>
+    // --- Calculator Header ---
+    const header = document.createElement('div');
+    header.className = 'calculator-header';
+    content.appendChild(header);
 
-      <div class="memory-keys">
-          <button class="mem-btn memory-btn" value="mc">MC</button>
-          <button class="mem-btn memory-btn" value="mr">MR</button>
-          <button class="mem-btn memory-btn" value="m+">M+</button>
-          <button class="mem-btn memory-btn" value="m-">M-</button>
-          <button class="mem-btn memory-btn" value="ms">MS</button>
-          <button class="mem-btn memory-btn" value="m_r">M↓</button>
-      </div>
+    const menuBtn = document.createElement('button');
+    menuBtn.className = 'menu-btn';
+    menuBtn.textContent = '☰';
+    header.appendChild(menuBtn);
 
-      <div class="function-selectors button-label-bar">
-          <div class="dropdown-wrapper">
-              <button class="dropdown-btn trig-dropdown-btn" value="trig-toggle">
-                  <span class="icon">△</span>
-                  Trigonometry <span class="arrow">⌄</span>
-              </button>
-              <div class="dropdown-menu trig-menu hidden">
-                  <button class="trig-key" value="sin(">sin</button>
-                  <button class="trig-key" value="cos(">cos</button>
-                  <button class="trig-key" value="tan(">tan</button>
-                  <button class="trig-key" value="asin(">sin⁻¹</button>
-                  <button class="trig-key" value="acos(">cos⁻¹</button>
-                  <button class="trig-key" value="atan(">tan⁻¹</button>
-                  <button class="trig-key" value="sec(">sec</button>
-                  <button class="trig-key" value="csc(">csc</button>
-                  <button class="trig-key" value="cot(">cot</button>
-              </div>
-          </div>
+    const title = document.createElement('div');
+    title.className = 'title';
+    title.textContent = 'Scientific';
+    header.appendChild(title);
 
-          <div class="dropdown-wrapper">
-              <button class="dropdown-btn func-dropdown-btn">
-                  <span class="icon">ƒ</span>
-                  Function <span class="arrow">⌄</span>
-              </button>
-          </div>
-      </div>
+    const modeToggles = document.createElement('div');
+    modeToggles.className = 'mode-toggles';
+    header.appendChild(modeToggles);
 
-      <div class="keypad-grid buttons-container">
-          <button class="key func-key" value="2nd">2<sup>nd</sup></button>
-          <button class="key func-key" value="pi">π</button>
-          <button class="key func-key" value="e">e</button>
-          <button class="key func-key utility-key" value="AC">C</button>
-          <button class="key utility-key" value="bksp">&#9003;</button>
-          
-          <button class="key func-key" value="x2">x²</button>
-          <button class="key func-key" value="1/x">1/x</button>
-          <button class="key func-key" value="abs">|x|</button>
-          <button class="key func-key" value="exp">exp</button>
-          <button class="key func-key" value="mod">%</button>
-          
-          <button class="key func-key" value="2sqrt"><sup>2</sup>√x</button>
-          <button class="key parens-key" value="(">(</button>
-          <button class="key parens-key" value=")">)</button>
-          <button class="key func-key" value="n!">n!</button>
-          <button class="key operator-key" value="divide">÷</button>
-          
-          <button class="key func-key" value="xy">x<sup>y</sup></button>
-          <button class="key num-key" value="7">7</button>
-          <button class="key num-key" value="8">8</button>
-          <button class="key num-key" value="9">9</button>
-          <button class="key operator-key" value="multiply">×</button>
-          
-          <button class="key func-key" value="10x">10<sup>x</sup></button>
-          <button class="key num-key" value="4">4</button>
-          <button class="key num-key" value="5">5</button>
-          <button class="key num-key" value="6">6</button>
-          <button class="key operator-key" value="minus">-</button>
-          
-          <button class="key func-key" value="log">log</button>
-          <button class="key num-key" value="1">1</button>
-          <button class="key num-key" value="2">2</button>
-          <button class="key num-key" value="3">3</button>
-          <button class="key operator-key" value="plus">+</button>
-          
-          <button class="key func-key" value="ln">ln</button>
-          <button class="key func-key" value="+/-">+/-</button>
-          <button class="key num-key" value="0">0</button>
-          <button class="key num-key period" value=".">,</button>
-          <button class="key equals-key" value="equals">=</button>
-      </div>
-    </div>
-  </div>
-  `;
+    const radDeg = document.createElement('div');
+    radDeg.id = 'rad-deg-indicator';
+    radDeg.textContent = 'DEG';
+    modeToggles.appendChild(radDeg);
+
+    const feIndicator = document.createElement('div');
+    feIndicator.id = 'f-e-indicator';
+    feIndicator.textContent = 'F-E';
+    modeToggles.appendChild(feIndicator);
+
+    const historyBtn = document.createElement('button');
+    historyBtn.className = 'history-btn';
+    historyBtn.textContent = '⟲';
+    modeToggles.appendChild(historyBtn);
+
+    // --- Display Container ---
+    const displayContainer = document.createElement('div');
+    displayContainer.className = 'display-container';
+    content.appendChild(displayContainer);
+
+    const computationDisplay = document.createElement('div');
+    computationDisplay.className = 'computation-display';
+    displayContainer.appendChild(computationDisplay);
+
+    const resultDisplay = document.createElement('div');
+    resultDisplay.className = 'result-display';
+    resultDisplay.textContent = '0';
+    displayContainer.appendChild(resultDisplay);
+
+    // --- Memory Keys ---
+    const memoryKeys = document.createElement('div');
+    memoryKeys.className = 'memory-keys';
+    content.appendChild(memoryKeys);
+
+    const memButtons = ['mc','mr','m+','m-','ms','m_r'];
+    memButtons.forEach(v => {
+        const btn = document.createElement('button');
+        btn.className = 'mem-btn memory-btn';
+        btn.value = v;
+        btn.textContent = v.toUpperCase() === 'M_R' ? 'M↓' : v.toUpperCase();
+        memoryKeys.appendChild(btn);
+    });
+
+    // --- Function Dropdowns ---
+    const funcSelectors = document.createElement('div');
+    funcSelectors.className = 'function-selectors button-label-bar';
+    content.appendChild(funcSelectors);
+
+    const trigWrapper = document.createElement('div');
+    trigWrapper.className = 'dropdown-wrapper';
+    funcSelectors.appendChild(trigWrapper);
+
+    const trigBtn = document.createElement('button');
+    trigBtn.className = 'dropdown-btn trig-dropdown-btn';
+    trigBtn.value = 'trig-toggle';
+    trigBtn.textContent = '△ Trigonometry ⌄';
+    trigWrapper.appendChild(trigBtn);
+
+    const trigMenu = document.createElement('div');
+    trigMenu.className = 'dropdown-menu trig-menu hidden';
+    trigWrapper.appendChild(trigMenu);
+
+    const trigKeys = [
+        {label:'sin', val:'sin('},{label:'cos', val:'cos('},{label:'tan', val:'tan('},
+        {label:'asin', val:'asin('},{label:'acos', val:'acos('},{label:'atan', val:'atan('},
+        {label:'sec', val:'sec('},{label:'csc', val:'csc('},{label:'cot', val:'cot('}
+    ];
+    trigKeys.forEach(k => {
+        const btn = document.createElement('button');
+        btn.className = 'trig-key';
+        btn.value = k.val;
+        btn.textContent = k.label;
+        trigMenu.appendChild(btn);
+    });
+
+    const funcWrapper = document.createElement('div');
+    funcWrapper.className = 'dropdown-wrapper';
+    funcSelectors.appendChild(funcWrapper);
+
+    const funcBtn = document.createElement('button');
+    funcBtn.className = 'dropdown-btn func-dropdown-btn';
+    funcBtn.textContent = 'ƒ Function ⌄';
+    funcWrapper.appendChild(funcBtn);
+
+    // --- Keypad Grid ---
+    const keypad = document.createElement('div');
+    keypad.className = 'keypad-grid buttons-container';
+    content.appendChild(keypad);
+
+    const buttons = [
+        {val:'2nd', cls:'func-key', label:'2nd'},{val:'pi', cls:'func-key', label:'π'},{val:'e', cls:'func-key', label:'e'},{val:'AC', cls:'func-key utility-key', label:'C'},{val:'bksp', cls:'utility-key', label:'⌫'},
+        {val:'x2', cls:'func-key', label:'x²'},{val:'1/x', cls:'func-key', label:'1/x'},{val:'abs', cls:'func-key', label:'|x|'},{val:'exp', cls:'func-key', label:'exp'},{val:'mod', cls:'func-key', label:'%'},
+        {val:'2sqrt', cls:'func-key', label:'√²'},{val:'(', cls:'parens-key', label:'('},{val:')', cls:'parens-key', label:')'},{val:'n!', cls:'func-key', label:'n!'},{val:'divide', cls:'operator-key', label:'÷'},
+        {val:'xy', cls:'func-key', label:'xʸ'},{val:'7', cls:'num-key', label:'7'},{val:'8', cls:'num-key', label:'8'},{val:'9', cls:'num-key', label:'9'},{val:'multiply', cls:'operator-key', label:'×'},
+        {val:'10x', cls:'func-key', label:'10ˣ'},{val:'4', cls:'num-key', label:'4'},{val:'5', cls:'num-key', label:'5'},{val:'6', cls:'num-key', label:'6'},{val:'minus', cls:'operator-key', label:'-'},
+        {val:'log', cls:'func-key', label:'log'},{val:'1', cls:'num-key', label:'1'},{val:'2', cls:'num-key', label:'2'},{val:'3', cls:'num-key', label:'3'},{val:'plus', cls:'operator-key', label:'+'},
+        {val:'ln', cls:'func-key', label:'ln'},{val:'+/-', cls:'func-key', label:'+/-'},{val:'0', cls:'num-key', label:'0'},{val:'.', cls:'num-key period', label:','},{val:'equals', cls:'equals-key', label:'='}
+    ];
+
+    buttons.forEach(b => {
+        const btn = document.createElement('button');
+        btn.className = `key ${b.cls}`;
+        btn.value = b.val;
+        btn.textContent = b.label;
+        keypad.appendChild(btn);
+    });
+
+    return wrapper;
 }
 
-injectCalculatorHTML();
+document.body.appendChild(createCalculator());
+
+
+
 
 // --- STATE MANAGEMENT ---
 interface CalculatorState {
@@ -712,7 +754,7 @@ function getButtonDetails(button: HTMLElement): { value: string, press: string, 
 }
 
 
-function handleButtonEvent(target: HTMLElement): void {
+function handleButtonEvent(target: HTMLElement): void { 
     // --- Check if the clicked button is one of the new trig keys ---
     if (target.matches('.trig-key')) {
         const buttonDetail = {
@@ -721,8 +763,7 @@ function handleButtonEvent(target: HTMLElement): void {
             display: target.textContent!,
             type: 'function'
         };
-        handleButtonClick(buttonDetail, target);
-        // Close menu after selection
+        handleButtonClick(buttonDetail); // ✅ only 1 argument
         if (UI.trigMenu) UI.trigMenu.classList.add('hidden'); 
         return; 
     }
@@ -731,19 +772,38 @@ function handleButtonEvent(target: HTMLElement): void {
     const buttonDetail = getButtonDetails(target);
     if (!buttonDetail) return;
 
-    handleButtonClick(buttonDetail, target);
+    handleButtonClick(buttonDetail); // ✅ only 1 argument
 }
 
-function handleButtonClick(buttonDetail: { value: string, press: string, display: string, type: string }, button: HTMLElement): void {
-  
+
+function handleButtonClick(buttonDetail: { value: string, press: string, display: string, type: string }): void {
+
     // --- SPECIAL FUNCTION HANDLING ---
-    if (buttonDetail.value === '2nd') { toggleSecondFunction(); return; }
-    if (buttonDetail.value === 'AC') { Calculator.clearAll(); return; }
-    if (buttonDetail.value === 'bksp') { Calculator.handleBackspace(); return; }
-    if (buttonDetail.value === 'equals' || buttonDetail.value === '=') { Calculator.handleEquals(); return; }
-    if (buttonDetail.value === '+/-') { Calculator.handleNegation(); return; }
-    if (buttonDetail.value === 'abs') { Calculator.handleAbs(); return; }
-    
+    if (buttonDetail.value === '2nd') {
+        toggleSecondFunction();
+        return;
+    }
+    if (buttonDetail.value === 'AC') {
+        Calculator.clearAll();
+        return;
+    }
+    if (buttonDetail.value === 'bksp') {
+        Calculator.handleBackspace();
+        return;
+    }
+    if (buttonDetail.value === 'equals' || buttonDetail.value === '=') {
+        Calculator.handleEquals();
+        return;
+    }
+    if (buttonDetail.value === '+/-') {
+        Calculator.handleNegation();
+        return;
+    }
+    if (buttonDetail.value === 'abs') {
+        Calculator.handleAbs();
+        return;
+    }
+
     // --- MEMORY HANDLERS ---
     if (buttonDetail.type === 'memory') {
         if (buttonDetail.value === 'mc') Calculator.handleMemoryClear();
@@ -758,6 +818,7 @@ function handleButtonClick(buttonDetail: { value: string, press: string, display
     // --- REGULAR INPUT HANDLING ---
     const isNewInput = buttonDetail.type === 'number' || buttonDetail.value === '.' || buttonDetail.type === 'paren' || buttonDetail.value === 'pi' || buttonDetail.value === 'e';
 
+    // If a new calculation starts after a previous result
     if (state.shouldStartFresh && state.lastResult !== null) {
         if (isNewInput) {
             state.currentDisplay = '';
